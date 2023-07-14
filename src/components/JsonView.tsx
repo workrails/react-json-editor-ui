@@ -1,4 +1,4 @@
-import { AutoComplete, Input, InputNumber, Select } from 'antd'
+import { AutoComplete, InputNumber, Select } from 'antd'
 import React, { useState } from 'react'
 import {
   DataType,
@@ -17,6 +17,7 @@ import CollapsePart from './Collapse'
 export type JsonViewProps = {
   setEditObject: any
   editObject: Record<string, any>
+  options: string[]
   optionsMap?: Record<
     string,
     Array<{
@@ -27,7 +28,7 @@ export type JsonViewProps = {
 }
 
 function JsonView(props: JsonViewProps) {
-  const { editObject, setEditObject, optionsMap } = props
+  const { editObject, setEditObject, optionsMap = {}, options = [] } = props
   const [allowMap, setAllowMap] = useState<Record<string, boolean>>({})
 
   const syncData = (data: Record<string, any>) => {
@@ -53,7 +54,7 @@ function JsonView(props: JsonViewProps) {
   }
 
   const onChangeKey = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    value: string,
     currentKey: string,
     uniqueKey: string,
     source: Record<string, any>
@@ -62,7 +63,7 @@ function JsonView(props: JsonViewProps) {
     for (const key in source) {
       if (Object.prototype.hasOwnProperty.call(source, key)) {
         if (key === currentKey) {
-          newValue[event.target.value] = source[key]
+          newValue[value] = source[key]
         } else {
           newValue[key] = source[key]
         }
@@ -201,15 +202,18 @@ function JsonView(props: JsonViewProps) {
               <div key={uniqueKey} className="indexLine">
                 <CollapsePart uniqueKey={uniqueKey} fieldValue={fieldValue} />
                 <span className="jsonKey">
-                  <Input
-                    size="small"
-                    style={{ width: '100px' }}
-                    placeholder={fieldKey}
-                    value={fieldKey}
-                    onChange={event =>
-                      onChangeKey(event, fieldKey, uniqueKey, sourceData)
-                    }
-                  />
+                   <AutoComplete
+                       style={{ width: 100 }}
+                       size="small"
+                       options={options.map(option => ({value: option, label: option}))}
+                       onChange={value => onChangeKey(value, fieldKey, uniqueKey, sourceData)}
+                       value={fieldKey}
+                       filterOption={(inputValue, option) =>
+                           `${option!.value}`
+                               .toUpperCase()
+                               .indexOf(inputValue.toUpperCase()) !== -1
+                       }
+                   />
                 </span>
                 <b>{getPlaceholder(fieldValue)}</b>
                 {!allowMap[uniqueKey] && (
@@ -255,6 +259,7 @@ function JsonView(props: JsonViewProps) {
         editObject,
         setEditObject,
         optionsMap,
+        options,
 
         onChangeType,
         onClickDelete,

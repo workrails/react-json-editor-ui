@@ -14,6 +14,7 @@ export type JsonEditorProps = {
       label?: string
     }>
   >
+  options: string[]
   onChange: (data: any) => void
 }
 
@@ -30,6 +31,7 @@ function JsonEditor(props: JsonEditorProps) {
           editObject,
           setEditObject,
           optionsMap: props.optionsMap,
+          options: props.options,
         }}
       />
     </div>

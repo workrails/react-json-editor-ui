@@ -3,7 +3,6 @@ import {
   AutoComplete,
   Button,
   Col,
-  Input,
   InputNumber,
   Select,
   Space,
@@ -19,7 +18,7 @@ const AddItem = (props: {
   sourceData: any
   deepLevel: number
 }) => {
-  const { setEditObject, editObject, optionsMap } = useContext(ConfigContext)
+  const { setEditObject, editObject, optionsMap, options = [] } = useContext(ConfigContext)
   const { uniqueKey, sourceData } = props
   const isArray = Array.isArray(sourceData)
   const [templateData, setTemplateData] = useState<any>({})
@@ -34,8 +33,8 @@ const AddItem = (props: {
       ...showIncreaseMap,
     })
   }
-  const changeInputKey = (uniqueKey: string, event: any) => {
-    templateData[uniqueKey]['key'] = event.target.value
+  const changeInputKey = (uniqueKey: string, value: string) => {
+    templateData[uniqueKey]['key'] = value
     setTemplateData({ ...templateData })
   }
   const changeInputValue = (uniqueKey: string, value: any) => {
@@ -114,11 +113,16 @@ const AddItem = (props: {
         <Space>
           {!isArray && (
             <div>
-              <Input
-                size="small"
-                style={{ width: '100px' }}
-                onChange={event => changeInputKey(uniqueKey, event)}
-              ></Input>
+              <AutoComplete
+                  style={{ width: 100 }}
+                  size="small"
+                  options={options.map((option: string) => ({value: option, label: option}))}
+                  onChange={value => changeInputKey(uniqueKey, value)}
+                  filterOption={(inputValue, option) =>
+                      `${option!.value}`
+                          .toUpperCase()
+                          .indexOf(inputValue.toUpperCase()) !== -1
+                  }/>
             </div>
           )}
           <div>
