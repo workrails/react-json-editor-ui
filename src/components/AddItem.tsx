@@ -1,12 +1,5 @@
 import { PlusSquareOutlined } from '@ant-design/icons'
-import {
-  AutoComplete,
-  Button,
-  Col,
-  InputNumber,
-  Select,
-  Space,
-} from 'antd'
+import { AutoComplete, Button, Col, InputNumber, Select, Space } from 'antd'
 import cloneDeep from 'lodash.clonedeep'
 import React from 'react'
 import { useContext, useState } from 'react'
@@ -18,7 +11,12 @@ const AddItem = (props: {
   sourceData: any
   deepLevel: number
 }) => {
-  const { setEditObject, editObject, optionsMap, options = [] } = useContext(ConfigContext)
+  const {
+    setEditObject,
+    editObject,
+    optionsMap,
+    options = [],
+  } = useContext(ConfigContext)
   const { uniqueKey, sourceData } = props
   const isArray = Array.isArray(sourceData)
   const [templateData, setTemplateData] = useState<any>({})
@@ -69,7 +67,7 @@ const AddItem = (props: {
             style={{ width: 100 }}
             size="small"
             options={currentOptions}
-            onChange={value => changeInputValue(uniqueKey, value)}
+            onChange={(value) => changeInputValue(uniqueKey, value)}
             filterOption={(inputValue, option) =>
               `${option!.value}`
                 .toUpperCase()
@@ -82,7 +80,7 @@ const AddItem = (props: {
           <InputNumber
             size="small"
             style={{ width: '100px' }}
-            onBlur={event => changeInputValue(uniqueKey, +event.target.value)}
+            onBlur={(event) => changeInputValue(uniqueKey, +event.target.value)}
           />
         )
       case DataType.BOOLEAN:
@@ -114,25 +112,29 @@ const AddItem = (props: {
           {!isArray && (
             <div>
               <AutoComplete
-                  style={{ width: 100 }}
-                  size="small"
-                  options={options.map((option: string) => ({value: option, label: option}))}
-                  onChange={value => changeInputKey(uniqueKey, value)}
-                  filterOption={(inputValue, option) =>
-                      `${option!.value}`
-                          .toUpperCase()
-                          .indexOf(inputValue.toUpperCase()) !== -1
-                  }/>
+                style={{ width: 100 }}
+                size="small"
+                options={options.map((option: string) => ({
+                  value: option,
+                  label: option,
+                }))}
+                onChange={(value) => changeInputKey(uniqueKey, value)}
+                filterOption={(inputValue, option) =>
+                  `${option!.value}`
+                    .toUpperCase()
+                    .indexOf(inputValue.toUpperCase()) !== -1
+                }
+              />
             </div>
           )}
           <div>
             <Select
               size="small"
               style={{ width: '100px' }}
-              onChange={value => onChangeTempType(uniqueKey, value)}
+              onChange={(value) => onChangeTempType(uniqueKey, value)}
               defaultValue={DataType.STRING}
             >
-              {Object.values(DataType).map(item => (
+              {Object.values(DataType).map((item) => (
                 <Select.Option
                   value={item}
                   key={item}

@@ -18,10 +18,10 @@ function ToolsView(props: {
             <Select
               size="small"
               style={{ width: '100px' }}
-              onChange={value => onChangeType(value, props.uniqueKey)}
+              onChange={(value) => onChangeType(value, props.uniqueKey)}
               defaultValue={getTypeString(props.fieldValue)}
             >
-              {Object.values(DataType).map(item => (
+              {Object.values(DataType).map((item) => (
                 <Select.Option value={item} key={item}>
                   {item}
                 </Select.Option>

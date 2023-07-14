@@ -142,7 +142,7 @@ function JsonView(props: JsonViewProps) {
             style={{ width: '100px' }}
             placeholder={fieldValue}
             value={fieldValue}
-            onBlur={event => {
+            onBlur={(event) => {
               onChangeValue(+event.target.value, fieldKey, sourceData)
             }}
           />
@@ -202,18 +202,23 @@ function JsonView(props: JsonViewProps) {
               <div key={uniqueKey} className="indexLine">
                 <CollapsePart uniqueKey={uniqueKey} fieldValue={fieldValue} />
                 <span className="jsonKey">
-                   <AutoComplete
-                       style={{ width: 100 }}
-                       size="small"
-                       options={options.map(option => ({value: option, label: option}))}
-                       onChange={value => onChangeKey(value, fieldKey, uniqueKey, sourceData)}
-                       value={fieldKey}
-                       filterOption={(inputValue, option) =>
-                           `${option!.value}`
-                               .toUpperCase()
-                               .indexOf(inputValue.toUpperCase()) !== -1
-                       }
-                   />
+                  <AutoComplete
+                    style={{ width: 100 }}
+                    size="small"
+                    options={options.map((option) => ({
+                      value: option,
+                      label: option,
+                    }))}
+                    onChange={(value) =>
+                      onChangeKey(value, fieldKey, uniqueKey, sourceData)
+                    }
+                    value={fieldKey}
+                    filterOption={(inputValue, option) =>
+                      `${option!.value}`
+                        .toUpperCase()
+                        .indexOf(inputValue.toUpperCase()) !== -1
+                    }
+                  />
                 </span>
                 <b>{getPlaceholder(fieldValue)}</b>
                 {!allowMap[uniqueKey] && (
