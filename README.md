@@ -3,6 +3,7 @@
 > React-based visual json editor.
 
 ![](/images/example.png)
+
 ## Getting Started
 
 ### Install
@@ -14,10 +15,11 @@ npm i react-json-editor-ui -S
 ### Props
 
 | key        | description                                       | required | default |
-| ---------- | ------------------------------------------------- | -------- | ------- |
+|------------|---------------------------------------------------|----------|---------|
 | width      | The container width                               | false    | 500     |
 | data       | The editor uses data                              | true     | null    |
 | onChange   | Callback the data                                 | true     | null    |
+| options    | Autocomplete for the key                          | true     | null    |
 | optionsMap | When a match for auto-complete on the input value | false    | null    |
 
 ### Example:
@@ -52,6 +54,7 @@ const App = () => {
       onChange={data => {
         setEditObject(data)
       }}
+      options={['color', 'city']}
       optionsMap={{
         color: [
           { value: 'red', label: 'Red' },
