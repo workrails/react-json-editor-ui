@@ -20,16 +20,15 @@ function ToolsView(props: {
               style={{ width: '100px' }}
               onChange={value => onChangeType(value, props.uniqueKey)}
               defaultValue={getTypeString(props.fieldValue)}
-              options={Object.values(DataType).map(item => (
-                {
-                  value: item,
-                  label: item
-                }
-              ))}
+              options={Object.values(DataType).map(item => ({
+                value: item,
+                label: item,
+              }))}
             />
           </span>
           <span className="iconSubtraction">
             <MinusSquareOutlined
+              rev
               style={{ color: '#E74C3C' }}
               onClick={() => onClickDelete(props.fieldKey, props.sourceData)}
             />
