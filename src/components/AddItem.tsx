@@ -1,4 +1,3 @@
-import { PlusSquareOutlined } from '@ant-design/icons'
 import {
   AutoComplete,
   Button,
@@ -17,14 +16,17 @@ const AddItem = (props: {
   uniqueKey: string
   sourceData: any
   deepLevel: number
+  fromArray?: boolean
 }) => {
   const { setEditObject, editObject, optionsMap, options = [] } = useContext(
     ConfigContext
   )
+
   const { uniqueKey, sourceData } = props
   const isArray = Array.isArray(sourceData)
   const [templateData, setTemplateData] = useState<any>({})
   const [showIncreaseMap, setShowIncreaseMap] = useState<any>({})
+
   const onClickIncrease = (key: string, value: boolean) => {
     showIncreaseMap[key] = value
     templateData[key] = {}
@@ -35,14 +37,17 @@ const AddItem = (props: {
       ...showIncreaseMap,
     })
   }
+
   const changeInputKey = (uniqueKey: string, value: string) => {
     templateData[uniqueKey]['key'] = value
     setTemplateData({ ...templateData })
   }
+
   const changeInputValue = (uniqueKey: string, value: any) => {
     templateData[uniqueKey]['value'] = value
     setTemplateData({ ...templateData })
   }
+
   const onChangeTempType = (uniqueKey: string, type: DataType) => {
     templateData[uniqueKey]['type'] = type
     templateData[uniqueKey]['value'] = typeMap[type]
@@ -50,6 +55,7 @@ const AddItem = (props: {
       ...templateData,
     })
   }
+
   const onConfirmIncrease = (uniqueKey: any, sourceData: any) => {
     const { key: aKey, value } = cloneDeep(templateData[uniqueKey])
     if (isArray) {
@@ -112,8 +118,15 @@ const AddItem = (props: {
         return null
     }
   }
+
   return (
-    <div className="addItem" key={uniqueKey}>
+    <div
+      className="addItem"
+      key={uniqueKey}
+      style={{
+        marginTop: isSourceEmpty(props.sourceData) ? 0 : 12,
+      }}
+    >
       {showIncreaseMap[uniqueKey] ? (
         <Space>
           {!isArray && (
@@ -166,14 +179,20 @@ const AddItem = (props: {
           </div>
         </Space>
       ) : (
-        <Col span={8}>
-          <PlusSquareOutlined
-            style={{ color: '#1E88E5' }}
-            onClick={() => onClickIncrease(uniqueKey, true)}
-          />
-        </Col>
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => onClickIncrease(uniqueKey, true)}
+        >
+          {props.deepLevel === 1 && !props.fromArray ? 'Add Value' : '+ row'}
+        </Button>
       )}
     </div>
   )
 }
+
+const isSourceEmpty = (source: any) => {
+  return typeof source === 'object' && !Object.keys(source).length
+}
+
 export default AddItem

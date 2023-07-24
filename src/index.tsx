@@ -26,7 +26,7 @@ function JsonEditor(props: JsonEditorProps) {
   return (
     <Wrapper
       className="jsonEditorContainer"
-      style={{ width: props.width ?? 500 }}
+      style={{ width: props.width ?? '100%' }}
     >
       <JsonView
         {...{
@@ -50,10 +50,10 @@ const Wrapper = styled.div`
 
     .jsonKey,
     .jsonValue {
-      margin-right: 10px;
+      margin-right: 5px;
     }
     .arrayContent {
-      margin-left: 20px;
+      margin-left: 28px;
     }
   }
 
@@ -74,7 +74,6 @@ const Wrapper = styled.div`
 
   .addItem {
     display: flex;
-    margin-top: 10px;
   }
 
   .mt15 {

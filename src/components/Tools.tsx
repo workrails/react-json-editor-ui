@@ -1,4 +1,4 @@
-import { MinusSquareOutlined } from '@ant-design/icons'
+import { MinusSquareOutlined } from '@workrails/ui'
 import { Select } from '@workrails/ui'
 import React from 'react'
 import { ConfigContext } from '../store'

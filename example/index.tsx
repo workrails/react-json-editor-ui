@@ -2,7 +2,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-import JsonEditor from '../'
+import JsonEditor from '../src'
 
 const App = () => {
   const [editObject, setEditObject] = React.useState<any>({

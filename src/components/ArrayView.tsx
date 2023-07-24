@@ -59,6 +59,7 @@ function ArrayView(props: Props) {
           uniqueKey={props.parentUniqueKey}
           deepLevel={props.deepLevel}
           sourceData={props.fieldValue}
+          fromArray
         />
       </div>
     </div>
