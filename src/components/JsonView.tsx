@@ -1,4 +1,4 @@
-import { AutoComplete, InputNumber, Select } from 'antd'
+import { AutoComplete, InputNumber, Select } from '@workrails/ui'
 import React, { useState } from 'react'
 import {
   DataType,
@@ -123,7 +123,7 @@ function JsonView(props: JsonViewProps) {
           <AutoComplete
             style={{ width: 100 }}
             size="small"
-            options={currentOptions}
+            options={currentOptions as { label: string; value: string }[]}
             value={fieldValue}
             onChange={(value: string) =>
               onChangeValue(value, fieldKey, sourceData)
@@ -142,7 +142,7 @@ function JsonView(props: JsonViewProps) {
             style={{ width: '100px' }}
             placeholder={fieldValue}
             value={fieldValue}
-            onBlur={(event) => {
+            onBlur={event => {
               onChangeValue(+event.target.value, fieldKey, sourceData)
             }}
           />
@@ -156,14 +156,17 @@ function JsonView(props: JsonViewProps) {
             onChange={(value: boolean) => {
               onChangeValue(value, fieldKey, sourceData)
             }}
-          >
-            <Select.Option value={true} label="true">
-              true
-            </Select.Option>
-            <Select.Option value={false} label="false">
-              false
-            </Select.Option>
-          </Select>
+            options={[
+              {
+                value: true as any,
+                label: 'true',
+              },
+              {
+                value: false as any,
+                label: 'false',
+              },
+            ]}
+          />
         )
     }
   }
@@ -205,11 +208,11 @@ function JsonView(props: JsonViewProps) {
                   <AutoComplete
                     style={{ width: 100 }}
                     size="small"
-                    options={options.map((option) => ({
+                    options={options.map(option => ({
                       value: option,
                       label: option,
                     }))}
-                    onChange={(value) =>
+                    onChange={value =>
                       onChangeKey(value, fieldKey, uniqueKey, sourceData)
                     }
                     value={fieldKey}

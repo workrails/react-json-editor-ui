@@ -20,7 +20,8 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "@workrails/ui": ">1.0.4"
   },
   "husky": {
     "hooks": {
@@ -64,7 +65,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "antd": "^4.23.0",
+    "@workrails/ui": "1.1.0-beta.0",
     "lodash.clonedeep": "^4.5.0"
   }
 }

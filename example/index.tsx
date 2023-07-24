@@ -1,9 +1,6 @@
-import 'react-app-polyfill/ie11'
-import 'react-json-syntax-highlighter/dist/ReactJsonSyntaxHighlighter.css'
 
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ReactJsonSyntaxHighlighter from 'react-json-syntax-highlighter'
 
 import JsonEditor from '../'
 
@@ -46,6 +43,7 @@ const App = () => {
             onChange={data => {
               setEditObject(data)
             }}
+            options={['Price', 'Hours']}
             optionsMap={{
               color: [
                 { value: 'red', label: 'Red' },
@@ -65,9 +63,14 @@ const App = () => {
             marginLeft: '2px',
             boxShadow: '0px 0px 10px #eee',
             borderRadius: '2px',
+            whiteSpace: 'pre'
           }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(editObject, null, 3)
+          }}
+
         >
-          <ReactJsonSyntaxHighlighter obj={editObject} />
+          
         </div>
       </div>
     </div>

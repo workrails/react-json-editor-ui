@@ -1,5 +1,5 @@
 import { MinusSquareOutlined } from '@ant-design/icons'
-import { Select } from 'antd'
+import { Select } from '@workrails/ui'
 import React from 'react'
 import { ConfigContext } from '../store'
 import { getTypeString, DataType } from '../common'
@@ -18,15 +18,15 @@ function ToolsView(props: {
             <Select
               size="small"
               style={{ width: '100px' }}
-              onChange={(value) => onChangeType(value, props.uniqueKey)}
+              onChange={value => onChangeType(value, props.uniqueKey)}
               defaultValue={getTypeString(props.fieldValue)}
-            >
-              {Object.values(DataType).map((item) => (
-                <Select.Option value={item} key={item}>
-                  {item}
-                </Select.Option>
+              options={Object.values(DataType).map(item => (
+                {
+                  value: item,
+                  label: item
+                }
               ))}
-            </Select>
+            />
           </span>
           <span className="iconSubtraction">
             <MinusSquareOutlined

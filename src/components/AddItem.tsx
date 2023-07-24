@@ -1,5 +1,12 @@
 import { PlusSquareOutlined } from '@ant-design/icons'
-import { AutoComplete, Button, Col, InputNumber, Select, Space } from 'antd'
+import {
+  AutoComplete,
+  Button,
+  Col,
+  InputNumber,
+  Select,
+  Space,
+} from '@workrails/ui'
 import cloneDeep from 'lodash.clonedeep'
 import React from 'react'
 import { useContext, useState } from 'react'
@@ -11,12 +18,9 @@ const AddItem = (props: {
   sourceData: any
   deepLevel: number
 }) => {
-  const {
-    setEditObject,
-    editObject,
-    optionsMap,
-    options = [],
-  } = useContext(ConfigContext)
+  const { setEditObject, editObject, optionsMap, options = [] } = useContext(
+    ConfigContext
+  )
   const { uniqueKey, sourceData } = props
   const isArray = Array.isArray(sourceData)
   const [templateData, setTemplateData] = useState<any>({})
@@ -67,7 +71,7 @@ const AddItem = (props: {
             style={{ width: 100 }}
             size="small"
             options={currentOptions}
-            onChange={(value) => changeInputValue(uniqueKey, value)}
+            onChange={value => changeInputValue(uniqueKey, value)}
             filterOption={(inputValue, option) =>
               `${option!.value}`
                 .toUpperCase()
@@ -80,7 +84,7 @@ const AddItem = (props: {
           <InputNumber
             size="small"
             style={{ width: '100px' }}
-            onBlur={(event) => changeInputValue(uniqueKey, +event.target.value)}
+            onBlur={event => changeInputValue(uniqueKey, +event.target.value)}
           />
         )
       case DataType.BOOLEAN:
@@ -92,14 +96,17 @@ const AddItem = (props: {
             onChange={(value: boolean) => {
               changeInputValue(uniqueKey, value)
             }}
-          >
-            <Select.Option value={true} label="true">
-              true
-            </Select.Option>
-            <Select.Option value={false} label="false">
-              false
-            </Select.Option>
-          </Select>
+            options={[
+              {
+                value: true as any,
+                label: 'true',
+              },
+              {
+                value: false as any,
+                label: 'false',
+              },
+            ]}
+          />
         )
       default:
         return null
@@ -118,7 +125,7 @@ const AddItem = (props: {
                   value: option,
                   label: option,
                 }))}
-                onChange={(value) => changeInputKey(uniqueKey, value)}
+                onChange={value => changeInputKey(uniqueKey, value)}
                 filterOption={(inputValue, option) =>
                   `${option!.value}`
                     .toUpperCase()
@@ -131,19 +138,13 @@ const AddItem = (props: {
             <Select
               size="small"
               style={{ width: '100px' }}
-              onChange={(value) => onChangeTempType(uniqueKey, value)}
+              onChange={value => onChangeTempType(uniqueKey, value)}
               defaultValue={DataType.STRING}
-            >
-              {Object.values(DataType).map((item) => (
-                <Select.Option
-                  value={item}
-                  key={item}
-                  style={{ width: '100px' }}
-                >
-                  {item}
-                </Select.Option>
-              ))}
-            </Select>
+              options={Object.values(DataType).map(item => ({
+                value: item,
+                label: item,
+              }))}
+            />
           </div>
           {getTypeTemplate(templateData[uniqueKey]['type'] || DataType.STRING)}
           <div>
