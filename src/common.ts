@@ -54,8 +54,8 @@ export const getPlaceholder = (value: any) => {
   if (!isObject(value)) return null
   const currentType = getTypeString(value)
   if (currentType === DataType.ARRAY) {
-    return `Array [${value.length}]`
+    return `Array (${value.length} elements)`
   } else {
-    return `Object {${Object.keys(value).length}}`
+    return `Object (${Object.keys(value).length} keys)`
   }
 }

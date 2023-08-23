@@ -117,7 +117,7 @@ const AddItem = (props: {
       className="addItem"
       key={uniqueKey}
       style={{
-        marginTop: isSourceEmpty(props.sourceData) ? 0 : 12,
+        marginTop: 6,
       }}
     >
       {showIncreaseMap[uniqueKey] ? (
@@ -177,15 +177,11 @@ const AddItem = (props: {
           size="small"
           onClick={() => onClickIncrease(uniqueKey, true)}
         >
-          {props.deepLevel === 1 && !props.fromArray ? 'Add Value' : '+ row'}
+          {props.deepLevel === 1 && !props.fromArray ? 'Add Value' : '+ Row'}
         </Button>
       )}
     </div>
   )
-}
-
-const isSourceEmpty = (source: any) => {
-  return typeof source === 'object' && !Object.keys(source).length
 }
 
 export default AddItem
