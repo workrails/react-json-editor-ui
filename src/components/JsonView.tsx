@@ -159,11 +159,11 @@ function JsonView(props: JsonViewProps) {
             options={[
               {
                 value: true as any,
-                label: 'true',
+                label: 'Yes',
               },
               {
                 value: false as any,
-                label: 'false',
+                label: 'No',
               },
             ]}
           />
