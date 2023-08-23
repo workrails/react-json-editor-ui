@@ -59,7 +59,7 @@ const Wrapper = styled.div`
 
   .indexLine {
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
   }
 
   .tools {

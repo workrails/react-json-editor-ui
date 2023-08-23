@@ -183,7 +183,7 @@ function JsonView(props: JsonViewProps) {
     const keyList = Object.keys(sourceData)
     if (!keyList.length) {
       return (
-        <div style={{ marginLeft: '28px' }}>
+        <div style={{ marginLeft: '18px' }}>
           <AddItem
             uniqueKey={'defaultKay'}
             deepLevel={deepLevel}
@@ -197,7 +197,7 @@ function JsonView(props: JsonViewProps) {
         className="objectContent"
         style={{ marginLeft: defaultLevel === deepLevel ? '0' : '28px' }}
       >
-        <div style={{ marginTop: '10px' }}>
+        <div style={{ marginTop: '8px' }}>
           {keyList.map((fieldKey, index) => {
             const uniqueKey = `${parentUniqueKey}-${index}`
             const fieldValue = sourceData[fieldKey]

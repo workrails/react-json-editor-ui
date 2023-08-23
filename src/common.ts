@@ -6,6 +6,14 @@ export enum DataType {
   ARRAY = 'array',
 }
 
+export const labels = {
+  [DataType.STRING]: "Text",
+  [DataType.NUMBER]: "Number",
+  [DataType.BOOLEAN]: "Yes/No",
+  [DataType.OBJECT]: "Object",
+  [DataType.ARRAY]: "List"
+}
+
 export const typeMap: Record<DataType, any> = {
   [DataType.STRING]: '',
   [DataType.BOOLEAN]: true,
@@ -54,7 +62,7 @@ export const getPlaceholder = (value: any) => {
   if (!isObject(value)) return null
   const currentType = getTypeString(value)
   if (currentType === DataType.ARRAY) {
-    return `Array (${value.length} elements)`
+    return `List (${value.length} elements)`
   } else {
     return `Object (${Object.keys(value).length} keys)`
   }

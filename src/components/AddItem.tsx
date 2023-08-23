@@ -3,7 +3,7 @@ import cloneDeep from 'lodash.clonedeep'
 import React from 'react'
 import { useContext, useState } from 'react'
 import { ConfigContext } from '../store'
-import { DataType, typeMap } from '../common'
+import {DataType, labels, typeMap} from '../common'
 
 const AddItem = (props: {
   uniqueKey: string
@@ -98,11 +98,11 @@ const AddItem = (props: {
             options={[
               {
                 value: true as any,
-                label: 'true',
+                label: 'Yes',
               },
               {
                 value: false as any,
-                label: 'false',
+                label: 'No',
               },
             ]}
           />
@@ -121,7 +121,7 @@ const AddItem = (props: {
       }}
     >
       {showIncreaseMap[uniqueKey] ? (
-        <Space>
+        <Space size={5}>
           {!isArray && (
             <div>
               <AutoComplete
@@ -148,13 +148,13 @@ const AddItem = (props: {
               defaultValue={DataType.STRING}
               options={Object.values(DataType).map(item => ({
                 value: item,
-                label: item,
+                label: labels[item],
               }))}
             />
           </div>
           {getTypeTemplate(templateData[uniqueKey]['type'] || DataType.STRING)}
           <div>
-            <Space>
+            <Space size={5}>
               <Button
                 size="small"
                 type="primary"
