@@ -59,7 +59,7 @@ const Wrapper = styled.div`
 
   .indexLine {
     position: relative;
-    margin-bottom: 8px;
+    margin-top: 8px;
   }
 
   .tools {
@@ -74,11 +74,6 @@ const Wrapper = styled.div`
 
   .addItem {
     display: flex;
-  }
-
-  .mt15 {
-    display: inline-block;
-    margin-top: 7px;
   }
 
   .collapse {

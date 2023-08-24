@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
-import { getPlaceholder, isObject } from '../common'
-import { ConfigContext } from '../store'
+import React, {useContext} from 'react'
+import {ConfigContext} from '../store'
 import AddItem from './AddItem'
 import CollapsePart from './Collapse'
 import ToolsView from './Tools'
+import {getPlaceholder, isObject} from "../common";
 
 type Props = {
   fieldValue: any[]
@@ -18,19 +18,22 @@ function ArrayView(props: Props) {
   const { allowMap } = useContext(ConfigContext)
   return (
     <div className="arrayContent">
-      <div style={{ marginTop: '10px' }}>
+      <div style={{ marginTop: '8px' }}>
         {props.fieldValue.map((item: any, index: number) => {
           const uniqueKey = `${props.parentUniqueKey}-${index}`
           return (
             <div className="indexLine" key={uniqueKey}>
-              <span className="jsonKey">
-                <span style={{ marginRight: '5px' }}>{index + 1}.</span>
-              </span>
               <CollapsePart uniqueKey={uniqueKey} fieldValue={item} />
               {isObject(item) ? (
-                <b className="mt15">{getPlaceholder(item)}</b>
+                <b style={{minHeight: '24px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>{getPlaceholder(item)}</b>
               ) : null}
-              {!allowMap[uniqueKey] && (
+              {/*  <AutoComplete*/}
+              {/*      style={{ width: 100 }}*/}
+              {/*      size="small"*/}
+              {/*      options={[{label: 'gosho', value: 'pseho'}]}*/}
+              {/*  />*/}
+
+                {!allowMap[uniqueKey] && (
                 <span className="jsonValue">
                   {props.getValue(
                     item,

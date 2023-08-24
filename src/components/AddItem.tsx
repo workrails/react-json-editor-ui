@@ -117,7 +117,7 @@ const AddItem = (props: {
       className="addItem"
       key={uniqueKey}
       style={{
-        marginTop: 6,
+        marginTop: 8,
       }}
     >
       {showIncreaseMap[uniqueKey] ? (
