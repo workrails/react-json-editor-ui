@@ -27,12 +27,6 @@ function ArrayView(props: Props) {
               {isObject(item) ? (
                 <b style={{minHeight: '24px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>{getPlaceholder(item)}</b>
               ) : null}
-              {/*  <AutoComplete*/}
-              {/*      style={{ width: 100 }}*/}
-              {/*      size="small"*/}
-              {/*      options={[{label: 'gosho', value: 'pseho'}]}*/}
-              {/*  />*/}
-
                 {!allowMap[uniqueKey] && (
                 <span className="jsonValue">
                   {props.getValue(
