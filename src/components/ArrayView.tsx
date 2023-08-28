@@ -1,9 +1,9 @@
-import React, {useContext} from 'react'
-import {ConfigContext} from '../store'
+import React, { useContext } from 'react'
+import { ConfigContext } from '../store'
 import AddItem from './AddItem'
 import CollapsePart from './Collapse'
 import ToolsView from './Tools'
-import {getPlaceholder, isObject} from "../common";
+import { getPlaceholder, isObject } from '../common'
 
 type Props = {
   fieldValue: any[]
@@ -26,9 +26,18 @@ function ArrayView(props: Props) {
             <div className="indexLine" key={uniqueKey}>
               <CollapsePart uniqueKey={uniqueKey} fieldValue={item} />
               {isObject(item) ? (
-                <b style={{minHeight: '24px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'}}>{getPlaceholder(item)}</b>
+                <b
+                  style={{
+                    minHeight: '24px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {getPlaceholder(item)}
+                </b>
               ) : null}
-                {!allowMap[uniqueKey] && (
+              {!allowMap[uniqueKey] && (
                 <span className="jsonValue">
                   {props.getValue(
                     item,

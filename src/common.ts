@@ -7,11 +7,11 @@ export enum DataType {
 }
 
 export const labels = {
-  [DataType.STRING]: "Text",
-  [DataType.NUMBER]: "Number",
-  [DataType.BOOLEAN]: "Yes/No",
-  [DataType.OBJECT]: "Object",
-  [DataType.ARRAY]: "List"
+  [DataType.STRING]: 'Text',
+  [DataType.NUMBER]: 'Number',
+  [DataType.BOOLEAN]: 'Yes/No',
+  [DataType.OBJECT]: 'Object',
+  [DataType.ARRAY]: 'List',
 }
 
 export const typeMap: Record<DataType, any> = {

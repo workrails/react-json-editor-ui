@@ -2,7 +2,7 @@ import { MinusSquareOutlined } from '@workrails/ui'
 import { Select } from '@workrails/ui'
 import React from 'react'
 import { ConfigContext } from '../store'
-import {getTypeString, DataType, labels} from '../common'
+import { getTypeString, DataType, labels } from '../common'
 
 function ToolsView(props: {
   fieldValue: any
@@ -18,9 +18,9 @@ function ToolsView(props: {
             <Select
               size="small"
               style={{ width: '100px' }}
-              onChange={value => onChangeType(value, props.uniqueKey)}
+              onChange={(value) => onChangeType(value, props.uniqueKey)}
               defaultValue={getTypeString(props.fieldValue)}
-              options={Object.values(DataType).map(item => ({
+              options={Object.values(DataType).map((item) => ({
                 value: item,
                 label: labels[item],
               }))}

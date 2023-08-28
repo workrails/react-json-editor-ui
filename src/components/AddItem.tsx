@@ -1,8 +1,8 @@
-import {AutoComplete, Button, InputNumber, Select, Space} from '@workrails/ui'
+import { AutoComplete, Button, InputNumber, Select, Space } from '@workrails/ui'
 import cloneDeep from 'lodash.clonedeep'
-import React, {useContext, useState} from 'react'
-import {ConfigContext, getNestedOption} from '../store'
-import {DataType, labels, typeMap} from '../common'
+import React, { useContext, useState } from 'react'
+import { ConfigContext, getNestedOption } from '../store'
+import { DataType, labels, typeMap } from '../common'
 
 const AddItem = (props: {
   uniqueKey: string
@@ -11,9 +11,7 @@ const AddItem = (props: {
   fromArray?: boolean
   accumulatedKey: string
 }) => {
-  const { setEditObject, editObject, optionsMap } = useContext(
-    ConfigContext
-  )
+  const { setEditObject, editObject, optionsMap } = useContext(ConfigContext)
 
   const { uniqueKey, sourceData, accumulatedKey } = props
   const isArray = Array.isArray(sourceData)
@@ -63,13 +61,16 @@ const AddItem = (props: {
   const getTypeTemplate = (type: DataType) => {
     switch (type) {
       case DataType.STRING:
-        const currentOptions = (getNestedOption(optionsMap, `${accumulatedKey}.${templateData[uniqueKey]?.['key']}`))
+        const currentOptions = getNestedOption(
+          optionsMap,
+          `${accumulatedKey}.${templateData[uniqueKey]?.['key']}`
+        )
         return (
           <AutoComplete
             style={{ width: 100 }}
             size="small"
             options={currentOptions?.values}
-            onChange={value => changeInputValue(uniqueKey, value)}
+            onChange={(value) => changeInputValue(uniqueKey, value)}
             filterOption={(inputValue, option) =>
               `${option!.value}`
                 .toUpperCase()
@@ -82,7 +83,7 @@ const AddItem = (props: {
           <InputNumber
             size="small"
             style={{ width: '100px' }}
-            onBlur={event => changeInputValue(uniqueKey, +event.target.value)}
+            onBlur={(event) => changeInputValue(uniqueKey, +event.target.value)}
           />
         )
       case DataType.BOOLEAN:
@@ -126,11 +127,12 @@ const AddItem = (props: {
               <AutoComplete
                 style={{ width: 100 }}
                 size="small"
-                options={Object.entries(accumulatedKey
+                options={Object.entries(
+                  accumulatedKey
                     ? getNestedOption(optionsMap, accumulatedKey)?.nested ?? {}
                     : optionsMap
                 ).map(([key, config]) => ({ value: key, label: config.label }))}
-                onChange={value => changeInputKey(uniqueKey, value)}
+                onChange={(value) => changeInputKey(uniqueKey, value)}
                 filterOption={(inputValue, option) =>
                   `${option!.value}`
                     .toUpperCase()
@@ -143,9 +145,9 @@ const AddItem = (props: {
             <Select
               size="small"
               style={{ width: '100px' }}
-              onChange={value => onChangeTempType(uniqueKey, value)}
+              onChange={(value) => onChangeTempType(uniqueKey, value)}
               defaultValue={DataType.STRING}
-              options={Object.values(DataType).map(item => ({
+              options={Object.values(DataType).map((item) => ({
                 value: item,
                 label: labels[item],
               }))}
