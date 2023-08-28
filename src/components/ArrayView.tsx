@@ -12,6 +12,7 @@ type Props = {
   getValue: any
   deepLevel: number
   parentUniqueKey: string
+  accumulatedKey: string
 }
 
 function ArrayView(props: Props) {
@@ -34,6 +35,7 @@ function ArrayView(props: Props) {
                     index,
                     props.fieldValue,
                     props.deepLevel + 1,
+                    props.accumulatedKey,
                     uniqueKey
                   )}
                 </span>
@@ -56,6 +58,7 @@ function ArrayView(props: Props) {
           uniqueKey={props.parentUniqueKey}
           deepLevel={props.deepLevel}
           sourceData={props.fieldValue}
+          accumulatedKey={props.accumulatedKey}
           fromArray
         />
       </div>

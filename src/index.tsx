@@ -2,18 +2,12 @@ import React, { useEffect, useState } from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import JsonView from './components/JsonView'
 import { styled } from '@workrails/ui'
+import {OptionsMap} from "./store";
 
 export type JsonEditorProps = {
   width?: number | string
   data: Record<string, any>
-  optionsMap?: Record<
-    string,
-    Array<{
-      value: string
-      label?: string
-    }>
-  >
-  options: string[]
+  optionsMap?: OptionsMap
   onChange: (data: any) => void
 }
 
@@ -33,7 +27,6 @@ function JsonEditor(props: JsonEditorProps) {
           editObject,
           setEditObject,
           optionsMap: props.optionsMap,
-          options: props.options,
         }}
       />
     </Wrapper>

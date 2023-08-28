@@ -1,8 +1,7 @@
-import { AutoComplete, Button, InputNumber, Select, Space } from '@workrails/ui'
+import {AutoComplete, Button, InputNumber, Select, Space} from '@workrails/ui'
 import cloneDeep from 'lodash.clonedeep'
-import React from 'react'
-import { useContext, useState } from 'react'
-import { ConfigContext } from '../store'
+import React, {useContext, useState} from 'react'
+import {ConfigContext, getNestedOption} from '../store'
 import {DataType, labels, typeMap} from '../common'
 
 const AddItem = (props: {
@@ -10,12 +9,13 @@ const AddItem = (props: {
   sourceData: any
   deepLevel: number
   fromArray?: boolean
+  accumulatedKey: string
 }) => {
-  const { setEditObject, editObject, optionsMap, options = [] } = useContext(
+  const { setEditObject, editObject, optionsMap } = useContext(
     ConfigContext
   )
 
-  const { uniqueKey, sourceData } = props
+  const { uniqueKey, sourceData, accumulatedKey } = props
   const isArray = Array.isArray(sourceData)
   const [templateData, setTemplateData] = useState<any>({})
   const [showIncreaseMap, setShowIncreaseMap] = useState<any>({})
@@ -63,13 +63,12 @@ const AddItem = (props: {
   const getTypeTemplate = (type: DataType) => {
     switch (type) {
       case DataType.STRING:
-        const currentOptions =
-          optionsMap?.[templateData[uniqueKey]?.['key']] ?? []
+        const currentOptions = (getNestedOption(optionsMap, `${accumulatedKey}.${templateData[uniqueKey]?.['key']}`))
         return (
           <AutoComplete
             style={{ width: 100 }}
             size="small"
-            options={currentOptions}
+            options={currentOptions?.values}
             onChange={value => changeInputValue(uniqueKey, value)}
             filterOption={(inputValue, option) =>
               `${option!.value}`
@@ -127,10 +126,10 @@ const AddItem = (props: {
               <AutoComplete
                 style={{ width: 100 }}
                 size="small"
-                options={options.map((option: string) => ({
-                  value: option,
-                  label: option,
-                }))}
+                options={Object.entries(accumulatedKey
+                    ? getNestedOption(optionsMap, accumulatedKey)?.nested ?? {}
+                    : optionsMap
+                ).map(([key, config]) => ({ value: key, label: config.label }))}
                 onChange={value => changeInputKey(uniqueKey, value)}
                 filterOption={(inputValue, option) =>
                   `${option!.value}`

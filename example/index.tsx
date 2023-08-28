@@ -6,20 +6,11 @@ import JsonEditor from '../src'
 
 const App = () => {
   const [editObject, setEditObject] = React.useState<any>({
-    name: 'may',
-    age: null,
-    address: [
-      'Panyu Shiqiao on Canton',
-      'Tianhe',
-      {
-        city: 'forida meta 11',
-      },
-    ],
-    others: {
-      id: 1246,
-      joinTime: '2017-08-20. 10:20',
-      description: 'another',
-    },
+      "salesforce": {
+          "SBQQ__Quote__c": {
+              "SBQQ__Price__c": ""
+          }
+      }
   })
 
   return (
@@ -43,16 +34,25 @@ const App = () => {
             onChange={data => {
               setEditObject(data)
             }}
-            options={['Price', 'Hours']}
             optionsMap={{
-              color: [
-                { value: 'red', label: 'Red' },
-                { value: 'blue', label: 'Blue' },
-              ],
-              city: [
-                { value: 'beijing', label: 'Beijing' },
-                { value: 'shanghai', label: 'Shanghai' },
-              ],
+                foo: {
+                    label: "Foo",
+                    values: [{value: "asdf", label: "pesho"}]
+                },
+                salesforce: {
+                    label: "Salesforce",
+                    nested: {
+                        SBQQ__Quote__c: {
+                            label: "Quote",
+                            nested: {
+                                SBQQ__Price__c: {
+                                    label: "Price",
+                                    values: [{value: 1, label: "one"}, {value: 2, label: 'two'}]
+                                }
+                            }
+                        },
+                    }
+                }
             }}
           />
         </div>
@@ -70,7 +70,6 @@ const App = () => {
           }}
 
         >
-          
         </div>
       </div>
     </div>

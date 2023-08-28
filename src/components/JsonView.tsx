@@ -1,15 +1,8 @@
-import { AutoComplete, InputNumber, Select } from '@workrails/ui'
-import React, { useState } from 'react'
-import {
-  DataType,
-  getKeyList,
-  getPlaceholder,
-  getQuoteAddress,
-  getTypeString,
-  typeMap,
-} from '../common'
+import {AutoComplete, InputNumber, Select} from '@workrails/ui'
+import React, {useState} from 'react'
+import {DataType, getKeyList, getPlaceholder, getQuoteAddress, getTypeString, typeMap,} from '../common'
 import AddItem from './AddItem'
-import { ConfigContext } from '../store'
+import {ConfigContext, getNestedOption, OptionsMap} from '../store'
 import ArrayView from './ArrayView'
 import ToolsView from './Tools'
 import CollapsePart from './Collapse'
@@ -17,18 +10,11 @@ import CollapsePart from './Collapse'
 export type JsonViewProps = {
   setEditObject: any
   editObject: Record<string, any>
-  options: string[]
-  optionsMap?: Record<
-    string,
-    Array<{
-      value: string
-      label?: string
-    }>
-  >
+  optionsMap?: OptionsMap
 }
 
 function JsonView(props: JsonViewProps) {
-  const { editObject, setEditObject, optionsMap = {}, options = [] } = props
+  const { editObject, setEditObject, optionsMap = {} } = props
   const [allowMap, setAllowMap] = useState<Record<string, boolean>>({})
 
   const syncData = (data: Record<string, any>) => {
@@ -96,9 +82,11 @@ function JsonView(props: JsonViewProps) {
     fieldKey: string,
     sourceData: any,
     deepLevel: number,
+    accumulatedKey: string,
     parentUniqueKey: string
   ) => {
     const thatType = getTypeString(fieldValue)
+
     switch (thatType) {
       case DataType.ARRAY:
         return (
@@ -109,21 +97,22 @@ function JsonView(props: JsonViewProps) {
             deepLevel={deepLevel}
             parentUniqueKey={parentUniqueKey}
             getValue={getValue}
+            accumulatedKey={accumulatedKey}
           />
         )
       case DataType.OBJECT:
         return (
           <span>
-            {renderJsonConfig(fieldValue, deepLevel + 1, parentUniqueKey)}
+            {renderJsonConfig(fieldValue, deepLevel + 1, accumulatedKey, parentUniqueKey)}
           </span>
         )
       case DataType.STRING:
-        const currentOptions = optionsMap?.[fieldKey] ?? []
+        const currentOptions = getNestedOption(optionsMap, accumulatedKey)
         return (
           <AutoComplete
             style={{ width: 100 }}
             size="small"
-            options={currentOptions as { label: string; value: string }[]}
+            options={currentOptions?.values}
             value={fieldValue}
             onChange={(value: string) =>
               onChangeValue(value, fieldKey, sourceData)
@@ -178,6 +167,7 @@ function JsonView(props: JsonViewProps) {
   const renderJsonConfig = (
     sourceData: any,
     deepLevel: number = defaultLevel,
+    accumulatedKey: string,
     parentUniqueKey: string = `${deepLevel}`
   ) => {
     const keyList = Object.keys(sourceData)
@@ -185,9 +175,10 @@ function JsonView(props: JsonViewProps) {
       return (
         <div style={{ marginLeft: '18px' }}>
           <AddItem
-            uniqueKey={'defaultKay'}
+            uniqueKey={'defaultKey'}
             deepLevel={deepLevel}
             sourceData={sourceData}
+            accumulatedKey={accumulatedKey}
           />
         </div>
       )
@@ -200,6 +191,7 @@ function JsonView(props: JsonViewProps) {
         <div style={{ marginTop: '8px' }}>
           {keyList.map((fieldKey, index) => {
             const uniqueKey = `${parentUniqueKey}-${index}`
+            const nestedAccumulatedKey = `${accumulatedKey}.${fieldKey}`
             const fieldValue = sourceData[fieldKey]
             return (
               <div key={uniqueKey} className="indexLine">
@@ -208,10 +200,7 @@ function JsonView(props: JsonViewProps) {
                   <AutoComplete
                     style={{ width: 100 }}
                     size="small"
-                    options={options.map(option => ({
-                      value: option,
-                      label: option,
-                    }))}
+                    options={Object.entries(getNestedOption(optionsMap, nestedAccumulatedKey)?.nested ?? optionsMap).map(([key, config]) => ({ value: key, label: config.label }))}
                     onChange={value =>
                       onChangeKey(value, fieldKey, uniqueKey, sourceData)
                     }
@@ -231,7 +220,8 @@ function JsonView(props: JsonViewProps) {
                       fieldKey,
                       sourceData,
                       deepLevel,
-                      uniqueKey
+                      nestedAccumulatedKey,
+                      uniqueKey,
                     )}
                   </span>
                 )}
@@ -255,6 +245,7 @@ function JsonView(props: JsonViewProps) {
             uniqueKey={parentUniqueKey}
             deepLevel={deepLevel}
             sourceData={sourceData}
+            accumulatedKey={accumulatedKey}
           />
         </div>
       </div>
@@ -267,15 +258,13 @@ function JsonView(props: JsonViewProps) {
         editObject,
         setEditObject,
         optionsMap,
-        options,
-
         onChangeType,
         onClickDelete,
         onChangeAllow,
         allowMap,
       }}
     >
-      {renderJsonConfig(editObject)}
+      {renderJsonConfig(editObject, defaultLevel, "")}
     </ConfigContext.Provider>
   )
 }
