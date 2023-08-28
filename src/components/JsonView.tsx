@@ -13,6 +13,7 @@ import { ConfigContext, getKeys, getNestedOption, OptionsMap } from '../store'
 import ArrayView from './ArrayView'
 import ToolsView from './Tools'
 import CollapsePart from './Collapse'
+import cloneDeep from 'lodash.clonedeep'
 
 export type JsonViewProps = {
   setEditObject: any
@@ -39,7 +40,7 @@ function JsonView(props: JsonViewProps) {
 
   const onChangeType = (type: DataType, uniqueKey: string) => {
     const newEditObject = getQuoteAddress(
-      typeMap[type],
+      cloneDeep(typeMap[type]),
       getKeyList(uniqueKey),
       editObject
     )
@@ -50,19 +51,24 @@ function JsonView(props: JsonViewProps) {
     value: string,
     currentKey: string,
     uniqueKey: string,
-    source: Record<string, any>
+    source: Record<string, any>,
+    accumulatedKey: string
   ) => {
     const newValue: Record<string, any> = {}
+    const option = !accumulatedKey
+      ? optionsMap[value]
+      : getNestedOption(optionsMap, accumulatedKey)?.nested?.[value]
     for (const key in source) {
       if (Object.prototype.hasOwnProperty.call(source, key)) {
         if (key === currentKey) {
-          newValue[value] = source[key]
+          newValue[value] = option?.type
+            ? cloneDeep(typeMap[option.type])
+            : source[key]
         } else {
           newValue[key] = source[key]
         }
       }
     }
-
     const indexKeys = getKeyList(uniqueKey)
     const ROOT_LEVEL = 1
     if (indexKeys.length === ROOT_LEVEL) {
@@ -214,7 +220,13 @@ function JsonView(props: JsonViewProps) {
                     size="small"
                     options={getKeys(optionsMap, accumulatedKey)}
                     onChange={(value) =>
-                      onChangeKey(value, fieldKey, uniqueKey, sourceData)
+                      onChangeKey(
+                        value,
+                        fieldKey,
+                        uniqueKey,
+                        sourceData,
+                        accumulatedKey
+                      )
                     }
                     value={fieldKey}
                     filterOption={(inputValue, option) =>

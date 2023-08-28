@@ -55,6 +55,7 @@ function ArrayView(props: Props) {
                   fieldValue={item}
                   fieldKey={`${index}`}
                   sourceData={props.fieldValue}
+                  accumulatedKey={props.accumulatedKey}
                 />
               }
             </div>

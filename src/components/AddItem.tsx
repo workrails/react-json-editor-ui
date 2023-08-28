@@ -31,13 +31,14 @@ const AddItem = (props: {
 
   const changeInputKey = (uniqueKey: string, value: string) => {
     templateData[uniqueKey]['key'] = value
+
     const fixedType = getNestedOption(optionsMap, `${accumulatedKey}.${value}`)
       ?.type
     const type: DataType =
       fixedType ?? templateData[uniqueKey]['type'] ?? DataType.STRING
 
     templateData[uniqueKey]['type'] = type
-    templateData[uniqueKey]['value'] = typeMap[type]
+    templateData[uniqueKey]['value'] = cloneDeep(typeMap[type])
     templateData[uniqueKey]['fixedType'] = !!fixedType
 
     setTemplateData({ ...templateData })
@@ -50,18 +51,18 @@ const AddItem = (props: {
 
   const onChangeTempType = (uniqueKey: string, type: DataType) => {
     templateData[uniqueKey]['type'] = type
-    templateData[uniqueKey]['value'] = typeMap[type]
+    templateData[uniqueKey]['value'] = cloneDeep(typeMap[type])
     setTemplateData({
       ...templateData,
     })
   }
 
   const onConfirmIncrease = (uniqueKey: any, sourceData: any) => {
-    const { key: aKey, value } = cloneDeep(templateData[uniqueKey])
+    const { key, value } = cloneDeep(templateData[uniqueKey])
     if (isArray) {
       sourceData.push(value)
     } else {
-      sourceData[aKey] = value
+      sourceData[key] = value
     }
     setEditObject({ ...editObject })
     onClickIncrease(uniqueKey, false)
@@ -122,7 +123,7 @@ const AddItem = (props: {
   }
 
   const template = templateData[uniqueKey]
-  const type: DataType = template?.['type'] ?? DataType.STRING
+  const type: DataType = template?.['type']
 
   return (
     <div
@@ -149,12 +150,13 @@ const AddItem = (props: {
               />
             </div>
           )}
-          <div key={type}>
+          <div>
             <Select
               size="small"
               style={{ width: '100px' }}
               onChange={(value) => onChangeTempType(uniqueKey, value)}
-              defaultValue={type}
+              value={type}
+              defaultValue={DataType.STRING}
               options={
                 template?.['fixedType']
                   ? [{ value: type, label: labels[type] }]
@@ -171,6 +173,7 @@ const AddItem = (props: {
               <Button
                 size="small"
                 type="primary"
+                disabled={!template?.['key'] && !isArray}
                 onClick={() => onConfirmIncrease(uniqueKey, sourceData)}
               >
                 Confirm

@@ -11,40 +11,36 @@ function ToolsView(props: {
   sourceData: any
   accumulatedKey: string
 }) {
-  const { optionsMap } = useContext(ConfigContext)
+  const { optionsMap, onChangeType, onClickDelete } = useContext(ConfigContext)
   const option = getNestedOption(optionsMap, props.accumulatedKey)
+  const type = getTypeString(props.fieldValue)
   return (
-    <ConfigContext.Consumer>
-      {({ onChangeType, onClickDelete }) => (
-        <span className="tools">
-          <span>
-            <Select
-              size="small"
-              style={{ width: '100px' }}
-              onChange={(value) => onChangeType(value, props.uniqueKey)}
-              defaultValue={
-                option?.type ? option.type : getTypeString(props.fieldValue)
-              }
-              options={
-                option?.type
-                  ? [{ value: option.type, label: labels[option.type] }]
-                  : Object.values(DataType).map((item) => ({
-                      value: item,
-                      label: labels[item],
-                    }))
-              }
-            />
-          </span>
-          <span className="iconSubtraction">
-            <MinusSquareOutlined
-              rev
-              style={{ color: '#E74C3C' }}
-              onClick={() => onClickDelete(props.fieldKey, props.sourceData)}
-            />
-          </span>
-        </span>
-      )}
-    </ConfigContext.Consumer>
+    <span className="tools">
+      <span>
+        <Select
+          size="small"
+          style={{ width: '100px' }}
+          onChange={(value) => onChangeType(value, props.uniqueKey)}
+          value={option?.type ? option.type : type}
+          options={
+            option?.type
+              ? [{ value: option.type, label: labels[option.type] }]
+              : Object.values(DataType).map((item) => ({
+                  value: item,
+                  label: labels[item],
+                }))
+          }
+        />
+      </span>
+      <span className="iconSubtraction">
+        <MinusSquareOutlined
+          rev
+          style={{ color: '#E74C3C' }}
+          onClick={() => onClickDelete(props.fieldKey, props.sourceData)}
+        />
+      </span>
+    </span>
   )
 }
+
 export default ToolsView
