@@ -213,8 +213,10 @@ function JsonView(props: JsonViewProps) {
                     style={{ width: 100 }}
                     size="small"
                     options={Object.entries(
-                      getNestedOption(optionsMap, nestedAccumulatedKey)
-                        ?.nested ?? optionsMap
+                      accumulatedKey
+                        ? getNestedOption(optionsMap, accumulatedKey)?.nested ??
+                            {}
+                        : optionsMap
                     ).map(([key, config]) => ({
                       value: key,
                       label: config.label,

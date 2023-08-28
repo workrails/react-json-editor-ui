@@ -61,10 +61,10 @@ const AddItem = (props: {
   const getTypeTemplate = (type: DataType) => {
     switch (type) {
       case DataType.STRING:
-        const currentOptions = getNestedOption(
-          optionsMap,
-          `${accumulatedKey}.${templateData[uniqueKey]?.['key']}`
-        )
+        const key = templateData[uniqueKey]?.['key']
+        const currentOptions = key
+          ? getNestedOption(optionsMap, `${accumulatedKey}.${key}`)
+          : { values: [] }
         return (
           <AutoComplete
             style={{ width: 100 }}
