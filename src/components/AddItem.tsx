@@ -101,7 +101,7 @@ const AddItem = (props: {
         )
       case DataType.BOOLEAN:
         return (
-          <Select
+          <WorkRailsSelect
             size="small"
             style={{ width: '100px' }}
             defaultValue={true}
@@ -126,7 +126,7 @@ const AddItem = (props: {
   }
 
   const template = templateData[uniqueKey]
-  const type: DataType = template?.['type']
+  const type: DataType = template?.['type'] ?? DataType.STRING
   const option = getOptionByKey(optionsMap, accumulatedKey)
   const nestedOptionsMap = accumulatedKey ? option?.options ?? {} : optionsMap
 
@@ -162,7 +162,6 @@ const AddItem = (props: {
               style={{ width: '100px' }}
               onChange={(value) => onChangeTempType(uniqueKey, value)}
               value={type}
-              defaultValue={DataType.STRING}
               options={
                 template?.['fixedType']
                   ? [{ value: type, label: labels[type] }]

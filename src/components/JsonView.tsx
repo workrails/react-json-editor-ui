@@ -14,6 +14,7 @@ import ArrayView from './ArrayView'
 import ToolsView from './Tools'
 import CollapsePart from './Collapse'
 import cloneDeep from 'lodash.clonedeep'
+import { Select as WorkRailsSelect } from '@workrails/ui'
 import { Select } from './Select'
 
 export type JsonViewProps = {
@@ -158,7 +159,7 @@ function JsonView(props: JsonViewProps) {
         )
       case DataType.BOOLEAN:
         return (
-          <Select
+          <WorkRailsSelect
             size="small"
             style={{ width: '100px' }}
             defaultValue={Boolean(fieldValue)}
