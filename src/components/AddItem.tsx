@@ -1,8 +1,10 @@
-import { AutoComplete, Button, InputNumber, Select, Space } from '@workrails/ui'
+import { Button, InputNumber, Space } from '@workrails/ui'
 import cloneDeep from 'lodash.clonedeep'
 import React, { useContext, useState } from 'react'
-import { ConfigContext, getKeys, getNestedOption } from '../store'
+import { ConfigContext, getKeys, getOptionByKey } from '../store'
 import { DataType, labels, typeMap } from '../common'
+import { Select } from './Select'
+import { Select as WorkRailsSelect } from '@workrails/ui'
 
 const AddItem = (props: {
   uniqueKey: string
@@ -32,7 +34,7 @@ const AddItem = (props: {
   const changeInputKey = (uniqueKey: string, value: string) => {
     templateData[uniqueKey]['key'] = value
 
-    const fixedType = getNestedOption(optionsMap, `${accumulatedKey}.${value}`)
+    const fixedType = getOptionByKey(optionsMap, `${accumulatedKey}.${value}`)
       ?.type
     const type: DataType =
       fixedType ?? templateData[uniqueKey]['type'] ?? DataType.STRING
@@ -73,10 +75,11 @@ const AddItem = (props: {
       case DataType.STRING:
         const key = templateData[uniqueKey]?.['key']
         const currentOptions = key
-          ? getNestedOption(optionsMap, `${accumulatedKey}.${key}`)
-          : { values: [] }
+          ? getOptionByKey(optionsMap, `${accumulatedKey}.${key}`)
+          : { values: [], allowCustomValues: true }
         return (
-          <AutoComplete
+          <Select
+            allowCustom={currentOptions?.allowCustomValues}
             style={{ width: 100 }}
             size="small"
             options={currentOptions?.values}
@@ -124,6 +127,8 @@ const AddItem = (props: {
 
   const template = templateData[uniqueKey]
   const type: DataType = template?.['type']
+  const option = getOptionByKey(optionsMap, accumulatedKey)
+  const nestedOptionsMap = accumulatedKey ? option?.options ?? {} : optionsMap
 
   return (
     <div
@@ -137,10 +142,11 @@ const AddItem = (props: {
         <Space size={5}>
           {!isArray && (
             <div>
-              <AutoComplete
+              <Select
+                allowCustom={option?.allowCustomKeys}
                 style={{ width: 100 }}
                 size="small"
-                options={getKeys(optionsMap, accumulatedKey)}
+                options={getKeys(nestedOptionsMap)}
                 onChange={(value) => changeInputKey(uniqueKey, value)}
                 filterOption={(inputValue, option) =>
                   `${option!.value}`
@@ -151,7 +157,7 @@ const AddItem = (props: {
             </div>
           )}
           <div>
-            <Select
+            <WorkRailsSelect
               size="small"
               style={{ width: '100px' }}
               onChange={(value) => onChangeTempType(uniqueKey, value)}

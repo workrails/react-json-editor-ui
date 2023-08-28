@@ -34,16 +34,32 @@ const App = () => {
               salesforce: {
                 label: 'Salesforce',
                 type: DataType.OBJECT,
-                nested: {
+                allowCustomKeys: false,
+                options: {
                   SBQQ__Quote__c: {
                     label: 'Quote',
                     type: DataType.OBJECT,
-                    nested: {
+                    options: {
                       SBQQ__Price__c: {
                         label: 'Price',
                         type: DataType.NUMBER,
                       },
+                      SBQQ__Category__c: {
+                        label: 'Category',
+                        type: DataType.STRING,
+                        allowCustomValues: false,
+                        values: [
+                          {
+                            label: 'Maikati',
+                            value: 'bashtati',
+                          },
+                        ],
+                      },
                     },
+                  },
+                  SBQQ__Opportunity: {
+                    label: 'Opportunity',
+                    type: DataType.OBJECT,
                   },
                 },
               },

@@ -1,4 +1,4 @@
-import { AutoComplete, InputNumber, Select } from '@workrails/ui'
+import { InputNumber } from '@workrails/ui'
 import React, { useState } from 'react'
 import {
   DataType,
@@ -9,11 +9,12 @@ import {
   typeMap,
 } from '../common'
 import AddItem from './AddItem'
-import { ConfigContext, getKeys, getNestedOption, OptionsMap } from '../store'
+import { ConfigContext, getKeys, getOptionByKey, OptionsMap } from '../store'
 import ArrayView from './ArrayView'
 import ToolsView from './Tools'
 import CollapsePart from './Collapse'
 import cloneDeep from 'lodash.clonedeep'
+import { Select } from './Select'
 
 export type JsonViewProps = {
   setEditObject: any
@@ -57,7 +58,7 @@ function JsonView(props: JsonViewProps) {
     const newValue: Record<string, any> = {}
     const option = !accumulatedKey
       ? optionsMap[value]
-      : getNestedOption(optionsMap, accumulatedKey)?.nested?.[value]
+      : getOptionByKey(optionsMap, accumulatedKey)?.options?.[value]
     for (const key in source) {
       if (Object.prototype.hasOwnProperty.call(source, key)) {
         if (key === currentKey) {
@@ -125,9 +126,10 @@ function JsonView(props: JsonViewProps) {
           </span>
         )
       case DataType.STRING:
-        const currentOptions = getNestedOption(optionsMap, accumulatedKey)
+        const currentOptions = getOptionByKey(optionsMap, accumulatedKey)
         return (
-          <AutoComplete
+          <Select
+            allowCustom={currentOptions?.allowCustomValues}
             style={{ width: 100 }}
             size="small"
             options={currentOptions?.values}
@@ -211,14 +213,19 @@ function JsonView(props: JsonViewProps) {
             const uniqueKey = `${parentUniqueKey}-${index}`
             const fieldValue = sourceData[fieldKey]
             const nestedAccumulatedKey = `${accumulatedKey}.${fieldKey}`
+            const option = getOptionByKey(optionsMap, accumulatedKey)
+            const nestedOptionsMap = accumulatedKey
+              ? option?.options ?? {}
+              : optionsMap
             return (
               <div key={uniqueKey} className="indexLine">
                 <CollapsePart uniqueKey={uniqueKey} fieldValue={fieldValue} />
                 <span className="jsonKey">
-                  <AutoComplete
+                  <Select
+                    allowCustom={option?.allowCustomKeys}
                     style={{ width: 100 }}
                     size="small"
-                    options={getKeys(optionsMap, accumulatedKey)}
+                    options={getKeys(nestedOptionsMap)}
                     onChange={(value) =>
                       onChangeKey(
                         value,

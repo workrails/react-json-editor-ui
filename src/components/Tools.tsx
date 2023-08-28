@@ -1,8 +1,8 @@
 import { MinusSquareOutlined } from '@workrails/ui'
-import { Select } from '@workrails/ui'
 import React, { useContext } from 'react'
-import { ConfigContext, getNestedOption } from '../store'
+import { ConfigContext, getOptionByKey } from '../store'
 import { getTypeString, DataType, labels } from '../common'
+import { Select as WorkRailsSelect } from '@workrails/ui'
 
 function ToolsView(props: {
   fieldValue: any
@@ -12,12 +12,12 @@ function ToolsView(props: {
   accumulatedKey: string
 }) {
   const { optionsMap, onChangeType, onClickDelete } = useContext(ConfigContext)
-  const option = getNestedOption(optionsMap, props.accumulatedKey)
+  const option = getOptionByKey(optionsMap, props.accumulatedKey)
   const type = getTypeString(props.fieldValue)
   return (
     <span className="tools">
       <span>
-        <Select
+        <WorkRailsSelect
           size="small"
           style={{ width: '100px' }}
           onChange={(value) => onChangeType(value, props.uniqueKey)}
