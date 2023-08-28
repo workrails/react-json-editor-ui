@@ -41,10 +41,7 @@ const App = () => {
                     nested: {
                       SBQQ__Price__c: {
                         label: 'Price',
-                        values: [
-                          { value: 1, label: 'one' },
-                          { value: 2, label: 'two' },
-                        ],
+                        type: DataType.NUMBER,
                       },
                     },
                   },
