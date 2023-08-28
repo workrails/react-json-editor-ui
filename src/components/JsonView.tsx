@@ -9,7 +9,7 @@ import {
   typeMap,
 } from '../common'
 import AddItem from './AddItem'
-import { ConfigContext, getNestedOption, OptionsMap } from '../store'
+import { ConfigContext, getKeys, getNestedOption, OptionsMap } from '../store'
 import ArrayView from './ArrayView'
 import ToolsView from './Tools'
 import CollapsePart from './Collapse'
@@ -203,7 +203,6 @@ function JsonView(props: JsonViewProps) {
         <div style={{ marginTop: '8px' }}>
           {keyList.map((fieldKey, index) => {
             const uniqueKey = `${parentUniqueKey}-${index}`
-            const nestedAccumulatedKey = `${accumulatedKey}.${fieldKey}`
             const fieldValue = sourceData[fieldKey]
             return (
               <div key={uniqueKey} className="indexLine">
@@ -212,15 +211,7 @@ function JsonView(props: JsonViewProps) {
                   <AutoComplete
                     style={{ width: 100 }}
                     size="small"
-                    options={Object.entries(
-                      accumulatedKey
-                        ? getNestedOption(optionsMap, accumulatedKey)?.nested ??
-                            {}
-                        : optionsMap
-                    ).map(([key, config]) => ({
-                      value: key,
-                      label: config.label,
-                    }))}
+                    options={getKeys(optionsMap, accumulatedKey)}
                     onChange={(value) =>
                       onChangeKey(value, fieldKey, uniqueKey, sourceData)
                     }
@@ -240,7 +231,7 @@ function JsonView(props: JsonViewProps) {
                       fieldKey,
                       sourceData,
                       deepLevel,
-                      nestedAccumulatedKey,
+                      `${accumulatedKey}.${fieldKey}`,
                       uniqueKey
                     )}
                   </span>

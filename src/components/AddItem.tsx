@@ -1,7 +1,7 @@
 import { AutoComplete, Button, InputNumber, Select, Space } from '@workrails/ui'
 import cloneDeep from 'lodash.clonedeep'
 import React, { useContext, useState } from 'react'
-import { ConfigContext, getNestedOption } from '../store'
+import { ConfigContext, getKeys, getNestedOption } from '../store'
 import { DataType, labels, typeMap } from '../common'
 
 const AddItem = (props: {
@@ -127,11 +127,7 @@ const AddItem = (props: {
               <AutoComplete
                 style={{ width: 100 }}
                 size="small"
-                options={Object.entries(
-                  accumulatedKey
-                    ? getNestedOption(optionsMap, accumulatedKey)?.nested ?? {}
-                    : optionsMap
-                ).map(([key, config]) => ({ value: key, label: config.label }))}
+                options={getKeys(optionsMap, accumulatedKey)}
                 onChange={(value) => changeInputKey(uniqueKey, value)}
                 filterOption={(inputValue, option) =>
                   `${option!.value}`

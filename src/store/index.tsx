@@ -26,6 +26,17 @@ export const getNestedOption = (
   return get(optionsMap, path, {})
 }
 
+export const getKeys = (optionsMap: OptionsMap, accumulatedKey: string) => {
+  return Object.entries(
+    accumulatedKey
+      ? getNestedOption(optionsMap, accumulatedKey)?.nested ?? {}
+      : optionsMap
+  ).map(([key, config]) => ({
+    value: key,
+    label: config.label,
+  }))
+}
+
 const getPath = (accumulatedKey: string) => {
   return accumulatedKey
     .split('.')
