@@ -204,6 +204,7 @@ function JsonView(props: JsonViewProps) {
           {keyList.map((fieldKey, index) => {
             const uniqueKey = `${parentUniqueKey}-${index}`
             const fieldValue = sourceData[fieldKey]
+            const nestedAccumulatedKey = `${accumulatedKey}.${fieldKey}`
             return (
               <div key={uniqueKey} className="indexLine">
                 <CollapsePart uniqueKey={uniqueKey} fieldValue={fieldValue} />
@@ -231,7 +232,7 @@ function JsonView(props: JsonViewProps) {
                       fieldKey,
                       sourceData,
                       deepLevel,
-                      `${accumulatedKey}.${fieldKey}`,
+                      nestedAccumulatedKey,
                       uniqueKey
                     )}
                   </span>
@@ -243,6 +244,7 @@ function JsonView(props: JsonViewProps) {
                       fieldValue={fieldValue}
                       fieldKey={fieldKey}
                       sourceData={sourceData}
+                      accumulatedKey={nestedAccumulatedKey}
                     />
                   }
                 </span>

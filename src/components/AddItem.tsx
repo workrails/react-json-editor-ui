@@ -31,6 +31,15 @@ const AddItem = (props: {
 
   const changeInputKey = (uniqueKey: string, value: string) => {
     templateData[uniqueKey]['key'] = value
+    const fixedType = getNestedOption(optionsMap, `${accumulatedKey}.${value}`)
+      ?.type
+    const type: DataType =
+      fixedType ?? templateData[uniqueKey]['type'] ?? DataType.STRING
+
+    templateData[uniqueKey]['type'] = type
+    templateData[uniqueKey]['value'] = typeMap[type]
+    templateData[uniqueKey]['fixedType'] = !!fixedType
+
     setTemplateData({ ...templateData })
   }
 
@@ -112,6 +121,9 @@ const AddItem = (props: {
     }
   }
 
+  const template = templateData[uniqueKey]
+  const type: DataType = template?.['type'] ?? DataType.STRING
+
   return (
     <div
       className="addItem"
@@ -137,19 +149,23 @@ const AddItem = (props: {
               />
             </div>
           )}
-          <div>
+          <div key={type}>
             <Select
               size="small"
               style={{ width: '100px' }}
               onChange={(value) => onChangeTempType(uniqueKey, value)}
-              defaultValue={DataType.STRING}
-              options={Object.values(DataType).map((item) => ({
-                value: item,
-                label: labels[item],
-              }))}
+              defaultValue={type}
+              options={
+                template?.['fixedType']
+                  ? [{ value: type, label: labels[type] }]
+                  : Object.values(DataType).map((item) => ({
+                      value: item,
+                      label: labels[item],
+                    }))
+              }
             />
           </div>
-          {getTypeTemplate(templateData[uniqueKey]['type'] || DataType.STRING)}
+          {getTypeTemplate(type)}
           <div>
             <Space size={5}>
               <Button
@@ -174,7 +190,7 @@ const AddItem = (props: {
           size="small"
           onClick={() => onClickIncrease(uniqueKey, true)}
         >
-          {props.deepLevel === 1 && !props.fromArray ? 'Add Value' : '+ Row'}
+          {props.fromArray ? '+ Entry' : '+ Field'}
         </Button>
       )}
     </div>

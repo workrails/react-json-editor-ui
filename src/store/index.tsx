@@ -1,5 +1,6 @@
 import React from 'react'
 import get from 'lodash.get'
+import { DataType } from '../common'
 
 export const ConfigContext = React.createContext<
   {
@@ -13,6 +14,7 @@ export type OptionsMap = Record<string, Option>
 
 type Option = {
   label: string
+  type?: DataType
   nested?: OptionsMap
   values?: Array<{ label: string; value: any }>
 }

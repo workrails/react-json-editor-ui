@@ -2,15 +2,10 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
 import JsonEditor from '../src'
+import { DataType } from '../src/common'
 
 const App = () => {
-  const [editObject, setEditObject] = React.useState<any>({
-    salesforce: {
-      SBQQ__Quote__c: {
-        SBQQ__Price__c: '',
-      },
-    },
-  })
+  const [editObject, setEditObject] = React.useState<any>({})
 
   return (
     <div>
@@ -38,9 +33,11 @@ const App = () => {
               },
               salesforce: {
                 label: 'Salesforce',
+                type: DataType.OBJECT,
                 nested: {
                   SBQQ__Quote__c: {
                     label: 'Quote',
+                    type: DataType.OBJECT,
                     nested: {
                       SBQQ__Price__c: {
                         label: 'Price',
