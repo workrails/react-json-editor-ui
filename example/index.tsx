@@ -27,8 +27,8 @@ const App = () => {
               setEditObject(data)
             }}
             optionsMap={{
-              foo: {
-                label: 'Foo',
+              SBQQ__Quote__c: {
+                label: 'SBQQ__Quote__c',
                 values: [{ value: 'asdf', label: 'pesho' }],
               },
               salesforce: {

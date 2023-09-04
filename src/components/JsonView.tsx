@@ -131,7 +131,8 @@ function JsonView(props: JsonViewProps) {
         return (
           <Select
             allowCustom={currentOptions?.allowCustomValues}
-            style={{ width: 100 }}
+            style={{ minWidth: 100 }}
+            popupClassName="json-editor-popup"
             size="small"
             options={currentOptions?.values}
             value={fieldValue}
@@ -149,10 +150,10 @@ function JsonView(props: JsonViewProps) {
         return (
           <InputNumber
             size="small"
-            style={{ width: '100px' }}
+            style={{ minWidth: 100 }}
             placeholder={fieldValue}
             value={fieldValue}
-            onBlur={(event) => {
+            onBlur={event => {
               onChangeValue(+event.target.value, fieldKey, sourceData)
             }}
           />
@@ -161,7 +162,7 @@ function JsonView(props: JsonViewProps) {
         return (
           <WorkRailsSelect
             size="small"
-            style={{ width: '100px' }}
+            style={{ minWidth: 100 }}
             defaultValue={Boolean(fieldValue)}
             onChange={(value: boolean) => {
               onChangeValue(value, fieldKey, sourceData)
@@ -224,10 +225,11 @@ function JsonView(props: JsonViewProps) {
                 <span className="jsonKey">
                   <Select
                     allowCustom={option?.allowCustomKeys}
-                    style={{ width: 100 }}
+                    style={{ minWidth: 100 }}
+                    popupClassName="json-editor-popup"
                     size="small"
                     options={getKeys(nestedOptionsMap)}
-                    onChange={(value) =>
+                    onChange={value =>
                       onChangeKey(
                         value,
                         fieldKey,

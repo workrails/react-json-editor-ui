@@ -19,13 +19,14 @@ function ToolsView(props: {
       <span>
         <WorkRailsSelect
           size="small"
-          style={{ width: '100px' }}
-          onChange={(value) => onChangeType(value, props.uniqueKey)}
+          style={{ minWidth: 100 }}
+          onChange={value => onChangeType(value, props.uniqueKey)}
           value={option?.type ? option.type : type}
+          disabled={!!option?.type}
           options={
             option?.type
               ? [{ value: option.type, label: labels[option.type] }]
-              : Object.values(DataType).map((item) => ({
+              : Object.values(DataType).map(item => ({
                   value: item,
                   label: labels[item],
                 }))

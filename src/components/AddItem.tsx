@@ -80,10 +80,11 @@ const AddItem = (props: {
         return (
           <Select
             allowCustom={currentOptions?.allowCustomValues}
-            style={{ width: 100 }}
+            style={{ minWidth: 100 }}
             size="small"
+            popupClassName="json-editor-popup"
             options={currentOptions?.values}
-            onChange={(value) => changeInputValue(uniqueKey, value)}
+            onChange={value => changeInputValue(uniqueKey, value)}
             filterOption={(inputValue, option) =>
               `${option!.value}`
                 .toUpperCase()
@@ -103,7 +104,8 @@ const AddItem = (props: {
         return (
           <WorkRailsSelect
             size="small"
-            style={{ width: '100px' }}
+            style={{ minWidth: 100 }}
+            popupClassName="json-editor-popup"
             defaultValue={true}
             onChange={(value: boolean) => {
               changeInputValue(uniqueKey, value)
@@ -144,10 +146,11 @@ const AddItem = (props: {
             <div>
               <Select
                 allowCustom={option?.allowCustomKeys}
-                style={{ width: 100 }}
+                style={{ minWidth: 100 }}
+                popupClassName="json-editor-popup"
                 size="small"
                 options={getKeys(nestedOptionsMap)}
-                onChange={(value) => changeInputKey(uniqueKey, value)}
+                onChange={value => changeInputKey(uniqueKey, value)}
                 filterOption={(inputValue, option) =>
                   `${option!.value}`
                     .toUpperCase()
@@ -159,13 +162,15 @@ const AddItem = (props: {
           <div>
             <WorkRailsSelect
               size="small"
-              style={{ width: '100px' }}
-              onChange={(value) => onChangeTempType(uniqueKey, value)}
+              style={{ minWidth: 100 }}
+              popupClassName="json-editor-popup"
+              onChange={value => onChangeTempType(uniqueKey, value)}
               value={type}
+              disabled={!!template?.['fixedType']}
               options={
                 template?.['fixedType']
                   ? [{ value: type, label: labels[type] }]
-                  : Object.values(DataType).map((item) => ({
+                  : Object.values(DataType).map(item => ({
                       value: item,
                       label: labels[item],
                     }))

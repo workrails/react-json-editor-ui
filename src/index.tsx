@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import JsonView from './components/JsonView'
-import { styled } from '@workrails/ui'
+import { styled, Global, css } from '@workrails/ui'
 import { OptionsMap } from './store'
 
 export type JsonEditorProps = {
@@ -29,6 +29,12 @@ function JsonEditor(props: JsonEditorProps) {
           optionsMap: props.optionsMap,
         }}
       />
+      <Global styles={css`
+        .json-editor-popup.ant-select-dropdown {
+          min-width: 100px !important;
+          width: fit-content !important;
+        }
+      `} />
     </Wrapper>
   )
 }
