@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import JsonView from './components/JsonView'
 import { styled, Global, css } from '@workrails/ui'
@@ -11,11 +16,20 @@ export type JsonEditorProps = {
   onChange: (data: any) => void
 }
 
-function JsonEditor(props: JsonEditorProps) {
+export type JsonEditorRef = {
+  updateData: (data: Record<string, any>) => void
+}
+
+const JsonEditor = forwardRef<JsonEditorRef, JsonEditorProps>((props, ref) => {
   const [editObject, setEditObject] = useState<any>(cloneDeep(props.data))
+
   useEffect(() => {
     props.onChange(editObject)
   }, [editObject])
+
+  useImperativeHandle(ref, () => ({
+    updateData: data => setEditObject(cloneDeep(data)),
+  }))
 
   return (
     <Wrapper
@@ -37,7 +51,7 @@ function JsonEditor(props: JsonEditorProps) {
       `} />
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div`
   line-height: 1;

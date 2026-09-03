@@ -22,15 +22,21 @@ npm i react-json-editor-ui -S
 | options    | Autocomplete for the key                          | true     | null    |
 | optionsMap | When a match for auto-complete on the input value | false    | null    |
 
+### Ref Methods
+
+| method     | description                                       | params                      |
+| ---------- | ------------------------------------------------- | --------------------------- |
+| updateData | Update the editor data programmatically           | data: Record<string, any>   |
+
 ### Example:
 
 ```jsx
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import JsonEditor from 'react-json-editor-ui'
-import 'react-json-editor-ui/dist/react-json-editor-ui.cjs.development.css'
+import JsonEditor, { JsonEditorRef } from 'react-json-editor-ui'
 
 const App = () => {
+  const editorRef = React.useRef<JsonEditorRef>(null)
   const [editObject, setEditObject] = React.useState<any>({
     name: 'may',
     age: null,
@@ -48,8 +54,20 @@ const App = () => {
     },
   })
 
+  // Example of updating data programmatically using ref
+  const updateEditorData = () => {
+    if (editorRef.current) {
+      editorRef.current.updateData({
+        name: 'updated name',
+        age: 25,
+        // ... other properties
+      })
+    }
+  }
+
   return (
     <JsonEditor
+      ref={editorRef}
       data={editObject}
       onChange={data => {
         setEditObject(data)
