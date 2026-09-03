@@ -1,0 +1,58 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # GH_RW_TOKEN is an org secret scoped to selected repos; it must be shared with
+      # this repo (or set as a repo secret) for publishing to succeed.
+      GH_NPM_TOKEN: ${{ secrets.GH_RW_TOKEN || secrets.GH_NPM_TOKEN || github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Resolve version
+        id: pkg
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Check if already published
+        id: check
+        run: |
+          if npm view "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}" version >/dev/null 2>&1; then
+            echo "Already published, skipping."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies and build
+        if: steps.check.outputs.skip == 'false'
+        run: npm ci
+
+      - name: Publish
+        if: steps.check.outputs.skip == 'false'
+        run: npm publish
