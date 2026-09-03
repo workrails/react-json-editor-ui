@@ -74,7 +74,9 @@ const AddItem = (props: {
     switch (type) {
       case DataType.STRING:
         const key = templateData[uniqueKey]?.['key']
-        const currentOptions = key
+        const currentOptions = isArray
+          ? getOptionByKey(optionsMap, accumulatedKey)
+          : key
           ? getOptionByKey(optionsMap, `${accumulatedKey}.${key}`)
           : { values: [], allowCustomValues: true }
         return (
@@ -97,7 +99,7 @@ const AddItem = (props: {
           <InputNumber
             size="small"
             style={{ width: '100px' }}
-            onBlur={(event) => changeInputValue(uniqueKey, +event.target.value)}
+            onChange={value => changeInputValue(uniqueKey, Number(value))}
           />
         )
       case DataType.BOOLEAN:
