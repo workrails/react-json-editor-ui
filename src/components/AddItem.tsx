@@ -74,7 +74,9 @@ const AddItem = (props: {
     switch (type) {
       case DataType.STRING:
         const key = templateData[uniqueKey]?.['key']
-        const currentOptions = key
+        const currentOptions = isArray
+          ? getOptionByKey(optionsMap, accumulatedKey)
+          : key
           ? getOptionByKey(optionsMap, `${accumulatedKey}.${key}`)
           : { values: [], allowCustomValues: true }
         return (
