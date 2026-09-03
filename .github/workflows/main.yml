@@ -35,6 +35,7 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm ci --ignore-scripts
-      - run: npm run build
+      - name: Install dependencies and build
+        run: npm ci
+
       - run: npm run size
